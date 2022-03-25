@@ -11,7 +11,7 @@ If you don't want to pull the image from Docker Hub, use the following steps to 
 
 From this directory run:
 
-    docker build -t csce438:base /base
+    docker build -t csce438:base ./base
 
 This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.
 
