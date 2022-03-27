@@ -24,6 +24,7 @@
 #      but doing this won't warn you about the mount path.
 
 PROJ_PATH=$1
+NAME="systemzRfun"
 
 if [ ${#PROJ_PATH} -eq 0 ];
 then
@@ -35,7 +36,7 @@ then
         echo "./start_dev_env.sh /my/drive/or/folder/to/mount/";
 else
 	docker container prune -f;
-        echo "Starting dev container: systemzRfun";
+        echo "Starting dev container: ${NAME}";
 	echo "Mounted to: ${PROJ_PATH}";
-        docker run -w /root --name systemzRfun -itv ${PROJ_PATH}:/root csce438:base /bin/bash;
+        docker run -w /root --name ${NAME} -itv ${PROJ_PATH}:/root csce438:base /bin/bash;
 fi
