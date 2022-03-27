@@ -23,13 +23,11 @@ Next run:
 
     sh start_dev_env.sh </absolute/path/to/your/workspace>
 
-You can type in the absolute path to your project folder, or use something like
+You can type in the absolute path to your project folder, or use something like:
 
     sh start_dev_env.sh $(pwd)/src
 
 Where `src` contains all you build files, and other stuff.
-
-TODO-> output to .dev_container so we can docker exec (!)
 
 ## Using VSCode in the dev container
 You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host.
@@ -41,24 +39,24 @@ Install VSCode's Docker extension(s), if you're not prompted to already.
 
 MacOS
     
-    Open VSCode > "Remote Explorer (left side bar) > Select your container
+    Open VSCode > "Remote Explorer (left side bar) > Click the 'add window' button on "/systemzRfun csce438:base"
 
 Windows/WSL2
     
-    Open VSCode > "WSL: Ubuntu" (green button, bottom left) > "Attach to Running Container" > Select your container
+    Open VSCode > "WSL: Ubuntu" (green button, bottom left) > "Attach to Running Container" > Select "/systemzRfun csce438:base"
     OR
-    Open VSCode > "Docker" (left side bar, it's a whale!) > right click "csce438:base" > "Attach Visual Studio Code"
+    Open VSCode > "Docker" (left side bar, it's the whale!) > right click "csce438:base" > "Attach Visual Studio Code"
 
 You should now be running a new VSCode window in the dev container, with all your project files.
 
 When you install extensions in the "Extensions" tab on the left side, make sure you select to install them in your container.
 
-For anybody who might have difficulty getting extensions to work/persist on the container, please reach out and I'm happy to provide support: gkweston@tamu.edu
+For anybody who might have difficulty getting extensions to work/persist on the container, please reach out and I'm happy to provide support: gkweston@tamu.edu. Extensions can be a little tricky on MacOS for a few reasons...
 
 ### Updating includes
 Finally, install the Microsoft C/C++ Extension on the dev container.
 
-In the container, go to `/root/.vscode`, you will find the file `c_cpp_properties.json`. Open this in VSCode, Emacs, Nano, Vim? and in the `configurations["includePath]` entry add `"/grpc/**"`, so it might look a little like:
+In the container, go to `/root/.vscode`, you will find the file `c_cpp_properties.json`. Open this in `[VSCode|Emacs|Nano|Vim?]` and in the `configurations["includePath]` entry add `"/grpc/**"`, so it might look something like:
 
     {
         "configurations": [
@@ -78,7 +76,9 @@ In the container, go to `/root/.vscode`, you will find the file `c_cpp_propertie
         "version": 4
     }
 
-That should be it! You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
+You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
+
+You are now the proud owner of a dedicated CSCE438 docker container, yay! :)
 
 ### Opening a new shell in the same container
 Start a new shell in the container by running:
@@ -96,14 +96,16 @@ Where the default name is `systemzRfun`.
  
 * You can run `start_dev_env.sh` from anywhere on the host, so it may be useful to set an alias or variable. To save alias, concat this to your `~/.bashrc`
 
-        alias <your_cmd_name>='/path/to/start_dev_env.sh
+        alias <your_cmd_name>='absolute/path/to/start_dev_env.sh'
 
     Then, if you `source ~/.bashrc`, or restart your shell, you can start the container by calling:
     
-        <your_cmd_name> /path/to/mount
+        <your_cmd_name> absolute/path/to/mount
 
 * You could also skip all this source'ing and stuff by calling
 
        docker run -w /root -itv --name <cont_name> <path/to/mount>:/root csce438:base /bin/bash
 
     from anywhere on the host, or setting this as an alias, but doing this won't warn you about the mount path. If you use a different `cont_name` than my default, you will have to change `new_shell.sh` or use the command with the name you passed.
+
+🙂
