@@ -25,7 +25,7 @@
 
 PROJ_PATH=$1
 
-if [[ ${#PROJ_PATH} -eq 0 ]];
+if [ ${#PROJ_PATH} -eq 0 ];
 then
         echo "Pass the absolute path of the dir you would like to mount as argument to this script.";
         echo "";
@@ -34,7 +34,8 @@ then
         echo "OR";
         echo "./start_dev_env.sh /my/drive/or/folder/to/mount/";
 else
-        echo "Starting dev container mounted to:";
-        echo ${PROJ_PATH};
-        docker run -w /root -itv ${PROJ_PATH}:/root csce438:base /bin/bash
+	docker container prune -f;
+        echo "Starting dev container: systemzRfun";
+	echo "Mounted to: ${PROJ_PATH}";
+        docker run -w /root --name systemzRfun -itv ${PROJ_PATH}:/root csce438:base /bin/bash;
 fi

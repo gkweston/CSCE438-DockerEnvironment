@@ -1,13 +1,13 @@
 # CSCE438 Docker Environment
 An AmazonLinux Docker image with all dependancies up to MP3, configurable with VSCode, with resource allocation through Docker. Portable for MacOS/Linux/Windows/WSL2.
 
-For all steps below, run from your prefered bash/zsh instance (including on WSL2).
+Install Docker before following all steps below on your prefered shell.
 
 ## Pulling from Docker Hub
 TODO
 
 ## Building the base image locally
-If you don't want to pull the image from Docker Hub, use the following steps to build it locally. Feel free to add your own dependancies to the build chain in `/base/Dockerfile`, or create your own Dockerfile to inherit this image and add more tools to it.
+If you don't want to pull the image from Docker Hub, use the following steps to build it locally. Feel free to add your own dependancies to the build chain in `/base/Dockerfile`.
 
 Make sure Docker is running, then from this directory run:
 
@@ -16,56 +16,94 @@ Make sure Docker is running, then from this directory run:
 This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.
 
 ## Using a dev container
-You only need to build/pull from Docker Hub once. Unless you delete the container, from then on use the following steps to run it:
+You only need to build or pull from Docker Hub once, as long as you don't delete the container.
 
 ### Starting the dev container
 Next run:
 
-    sh start_dev_env.sh <project/path/to/mount>
+    sh start_dev_env.sh </absolute/path/to/your/workspace>
+
+You can type in the absolute path to your project folder, or use something like
+
+    sh start_dev_env.sh $(pwd)/src
+
+Where `src` contains all you build files, and other stuff.
 
 TODO-> output to .dev_container so we can docker exec (!)
 
-### Using VSCode in the dev container
+## Using VSCode in the dev container
+You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host.
 
-TODO-> Get persistant VSCode extensions
-TODO-> Probably get a vanilla container and set up VSCode extensions
+But getting around this is relatively easy.
 
-You can simply open a VSCode instance in your `project/path/to/mount` folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container (but rather the host).
+### Attaching VSCode to remote
+Install VSCode's Docker extension(s), if you're not prompted to already.
 
-Getting around this is relatively easy:
+MacOS
+    
+    Open VSCode > "Remote Explorer (left side bar) > Select your container
 
-    Open VSCode > Click "Remote Explorer (left side bar) > Select your container
+Windows/WSL2
+    
+    Open VSCode > "WSL: Ubuntu" (green button, bottom left) > "Attach to Running Container" > Select your container
+    OR
+    Open VSCode > "Docker" (left side bar, it's a whale!) > right click "csce438:base" > "Attach Visual Studio Code"
 
-As long as you have the Docker extension(s) (which it should prompt you for) installed, you will now be running VSCode out of the remote. This means you can install/uninstall extensions and as long the `.vscode-server` dir is saved in your mounted file, you shouldn't have to do this every time.
+You should now be running a new VSCode window in the dev container, with all your project files.
 
-When you install extensions in the "Extensions" tab on the left side, make sure you select your container.
+When you install extensions in the "Extensions" tab on the left side, make sure you select to install them in your container.
+
+For anybody who might have difficulty getting extensions to work/persist on the container, please reach out and I'm happy to provide support: gkweston@tamu.edu
+
+### Updating includes
+Finally, install the Microsoft C/C++ Extension on the dev container.
+
+In the container, go to `/root/.vscode`, you will find the file `c_cpp_properties.json`. Open this in VSCode, Emacs, Nano, Vim? and in the `configurations["includePath]` entry add `"/grpc/**"`, so it might look a little like:
+
+    {
+        "configurations": [
+            {
+                "name": "Linux",
+                "includePath": [
+                    "${workspaceFolder}/**",
+                    "/grpc/**"
+                ],
+                "defines": [],
+                "compilerPath": "/usr/bin/gcc",
+                "cStandard": "gnu11",
+                "cppStandard": "gnu++14",
+                "intelliSenseMode": "linux-gcc-x64"
+            }
+        ],
+        "version": 4
+    }
+
+That should be it! You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
 
 ### Opening a new shell in the same container
-TODO
-If you need another shell (for testing client/host), run:
-    
-    docker exec -it $(cat .dev_container) /bin/bash
+Start a new shell in the container by running:
 
+    ./new_shell.sh
 
+Or
+  
+    docker exec -it <cont_name> /bin/bash
+
+Where the default name is `systemzRfun`.
 
 ### Some notes
-
-A) Be careful!!!! Any saved changes will be reflected on the host machine for your mounted directory. This can also include any VSCode extensions you want to keep persistant on the dev environment.
+* Be careful!! Any saved changes will be reflected on the host machine.
  
-B) You can run this script from anywhere on your host, so it may be useful to set an alias or variable. To save alias, concat this to your `~/.bashrc`
+* You can run `start_dev_env.sh` from anywhere on the host, so it may be useful to set an alias or variable. To save alias, concat this to your `~/.bashrc`
 
-    `alias <your_cmd_name>='/path/to/start_dev_env.sh`
+        alias <your_cmd_name>='/path/to/start_dev_env.sh
 
-Then, if you `source ~/.bashrc`, or restart your shell, calling:
+    Then, if you `source ~/.bashrc`, or restart your shell, you can start the container by calling:
     
-    <your_cmd_name> /path/to/mount
+        <your_cmd_name> /path/to/mount
 
-will start the container.
- 
-(C) You can skip all the source'ing and stuff by calling
+* You could also skip all this source'ing and stuff by calling
 
-    docker run -w /root -itv <path/to/mount>:/root csce438:base /bin/bash
+       docker run -w /root -itv --name <cont_name> <path/to/mount>:/root csce438:base /bin/bash
 
-from anywhere on the host, or setting this as an alias, but doing this won't warn you about the mount path.
-
-You may have to give executable permissions to this file to run
+    from anywhere on the host, or setting this as an alias, but doing this won't warn you about the mount path. If you use a different `cont_name` than my default, you will have to change `new_shell.sh` or use the command with the name you passed.
