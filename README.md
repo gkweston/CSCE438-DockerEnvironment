@@ -1,10 +1,13 @@
 # CSCE438 Docker Environment
-An AmazonLinux Docker image with all dependancies up to MP3, configurable with VSCode, with resource allocation through Docker. Portable for MacOS/Linux/Windows/WSL2.
+An AmazonLinux Docker image with all dependancies up to MP2/MP3, configurable with VSCode, with resource allocation through Docker. Portable for MacOS/Linux/Windows/WSL2.
 
-Install Docker before following all steps below on your prefered shell.
+Install Docker and clone this git repo before following the steps below.
 
-## Pulling from Docker Hub
-TODO
+## Pulling from Docker Hub (much faster!)
+Skip straight to the fun by running:
+
+    sh docker_pull.sh
+
 
 ## Building the base image locally
 If you don't want to pull the image from Docker Hub, use the following steps to build it locally. Feel free to add your own dependancies to the build chain in `/base/Dockerfile`.
