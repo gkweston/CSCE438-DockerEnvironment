@@ -81,7 +81,7 @@ In the container, go to `/root/.vscode`, you will find the file `c_cpp_propertie
 
 You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
 
-You are now the proud owner of a dedicated CSCE438 docker container, yay! :)
+You are now the proud owner of a dedicated CSCE438 docker container, yay! 🙂
 
 ### Opening a new shell in the same container
 Start a new shell in the container by running:
@@ -110,5 +110,3 @@ Where the default name is `systemzRfun`.
        docker run -w /root -itv --name <cont_name> <path/to/mount>:/root csce438:base /bin/bash
 
     from anywhere on the host, or setting this as an alias, but doing this won't warn you about the mount path. If you use a different `cont_name` than my default, you will have to change `new_shell.sh` or use the command with the name you passed.
-
-🙂
