@@ -81,6 +81,8 @@ In the container, go to `/root/.vscode`, you will find the file `c_cpp_propertie
         "version": 4
     }
 
+NOTE: You may need to add other include paths such as `usr/include` and/or `usr/local/include`. These can be added as `usr/**` and/or `usr/local/**`. If at any point you've added an include path and your linter still gives red squiggles, restart VSCode altogether.
+
 You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
 
 You are now the proud owner of a dedicated CSCE438 docker container, yay! 🙂
