@@ -19,7 +19,7 @@ Make sure Docker is running, then from this directory run:
 This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.
 
 ## Using a dev container
-You only need to build or pull from Docker Hub once, as long as you don't delete the container.
+You only need to build or pull from Docker Hub once, as long as you don't delete the image (tagged cscee438:base).
 
 ### Starting the dev container
 Next run:
@@ -28,9 +28,11 @@ Next run:
 
 You can type in the absolute path to your project folder, or use something like:
 
-    sh start_dev_env.sh $(pwd)/src
+    sh start_dev_env.sh $(pwd)/MP_3
 
-Where `src` contains all you build files, and other stuff.
+Where you call this from your git repo directory, and `MP_3` contains all your project files, build files, and other stuff.
+
+NOTE: I like to keep my dev files in something like `<path/to/git/repo>/MP_3/src`. Then just `cd src` after remoting into the container. This keeps your dev directory (`src`) clean from any system config files (which are different on different OS's and generally are formatted as: `.system_file_name`.
 
 ## Using VSCode in the dev container
 You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host.
