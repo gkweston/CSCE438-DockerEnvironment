@@ -19,7 +19,7 @@ Make sure Docker is running, then from this directory run:
 This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.
 
 ## Using a dev container
-You only need to build or pull from Docker Hub once, as long as you don't delete the image (tagged csce438:base).
+You only need to build or pull from Docker Hub once, as long as you don't delete the image (tagged `csce438:base`).
 
 ### Starting the dev container
 Next run:
