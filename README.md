@@ -1,13 +1,33 @@
 # CSCE438 Docker Environment
 An AmazonLinux Docker image with all dependancies up to MP2/MP3, configurable with VSCode, with resource allocation through Docker. Portable for MacOS/Linux/Windows/WSL2.
 
-Install Docker and clone this git repo before following the steps below.
+## tl;dr
+___
+
+1. [Install Docker desktop](https://docs.docker.com/get-docker/)
+2.      # Clone this repo and pull the csce438 image
+        git clone git@github.com:gkweston/CSCE438-DockerEnvironment.git;
+        cd CSCE438-DockerEnvironment;
+        ./docker_pull.sh;
+3.      # Start and remote into the container, mounting project files
+        ./start_dev_env.sh </absolute/path/to/project/folder>;
+4.      # Start any number of new shells in your container
+        ./new_shell.sh;
+
+Optional: See "Using VSCode in the dev container" to setup VSCode and any extensions 
+___
+
+## Install Docker and clone this repo
+[Install Docker desktop](https://docs.docker.com/get-docker/)
+
+    # Clone this repo and pull the csce438 image
+    git clone git@github.com:gkweston/CSCE438-DockerEnvironment.git;
+    cd CSCE438-DockerEnvironment;
 
 ## Pulling from Docker Hub (much faster!)
 Skip straight to the fun by running:
 
     sh docker_pull.sh
-
 
 ## Building the base image locally
 If you don't want to pull the image from Docker Hub, use the following steps to build it locally. Feel free to add your own dependancies to the build chain in `/base/Dockerfile`.
@@ -16,12 +36,12 @@ Make sure Docker is running, then from this directory run:
 
     docker build -t csce438:base ./base
 
-This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.
+This will provision the amazonlinux image with project dependancies (CMake, gRPC, etc.). Keep this image on hand for the next step.  
 
-## Using a dev container
-You only need to build or pull from Docker Hub once, as long as you don't delete the image (tagged `csce438:base`).
+## Starting the dev container
 
-### Starting the dev container
+You only need to build or pull from Docker Hub once, as long as you don't delete the image (tagged: `csce438:base`).
+
 Next run:
 
     sh start_dev_env.sh </absolute/path/to/your/workspace>
@@ -34,12 +54,10 @@ Where you call this from your git repo directory, and `MP_3` contains all your p
 
 NOTE: I like to keep my dev files in something like `<path/to/git/repo>/MP_3/src`. Then just `cd src` after remoting into the container. This keeps your dev directory (`src`) clean from any system config files (which are different on different OS's and generally are formatted as: `.system_file_name`.
 
+
 ## Using VSCode in the dev container
-You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host.
+You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host. But getting around this is relatively easy. 
 
-But getting around this is relatively easy.
-
-### Attaching VSCode to remote
 Install VSCode's Docker extension(s), if you're not prompted to already.
 
 MacOS
@@ -87,7 +105,7 @@ You only need to do setup steps once, then in the future simply run the start sc
 
 You are now the proud owner of a dedicated CSCE438 docker container, yay! 🙂
 
-### Opening a new shell in the same container
+## Opening a new shell in the same container
 Start a new shell in the container by running:
 
     ./new_shell.sh
@@ -98,7 +116,7 @@ Or
 
 Where the default name is `systemzRfun`.
 
-### Some notes
+## Some notes
 * Be careful!! Any saved changes will be reflected on the host machine.
  
 * You can run `start_dev_env.sh` from anywhere on the host, so it may be useful to set an alias or variable. To save alias, concat this to your `~/.bashrc`
