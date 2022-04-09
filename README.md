@@ -2,7 +2,6 @@
 An AmazonLinux Docker image with all dependancies up to MP2/MP3, configurable with VSCode, with resource allocation through Docker. Portable for MacOS/Linux/Windows/WSL2.
 
 ## tl;dr
-___
 
 1. [Install Docker desktop](https://docs.docker.com/get-docker/)
 2.      # Clone this repo and pull the csce438 image
@@ -15,7 +14,6 @@ ___
         ./new_shell.sh;
 
 Optional: See "Using VSCode in the dev container" to setup VSCode and any extensions 
-___
 
 ## Install Docker and clone this repo
 [Install Docker desktop](https://docs.docker.com/get-docker/)
@@ -29,7 +27,7 @@ Skip straight to the fun by running:
 
     sh docker_pull.sh
 
-## Building the base image locally
+## Building the base image locally (much slower...)
 If you don't want to pull the image from Docker Hub, use the following steps to build it locally. Feel free to add your own dependancies to the build chain in `/base/Dockerfile`.
 
 Make sure Docker is running, then from this directory run:
@@ -54,6 +52,16 @@ Where you call this from your git repo directory, and `MP_3` contains all your p
 
 NOTE: I like to keep my dev files in something like `<path/to/git/repo>/MP_3/src`. Then just `cd src` after remoting into the container. This keeps your dev directory (`src`) clean from any system config files (which are different on different OS's and generally are formatted as: `.system_file_name`.
 
+## Opening a new shell in the same container
+Start a new shell in the container by running:
+
+    ./new_shell.sh
+
+Or
+  
+    docker exec -it <cont_name> /bin/bash
+
+Where the default name is `systemzRfun`.
 
 ## Using VSCode in the dev container
 You can simply open an IDE in your project workspace folder, but if you use common extensions (like a linter), they will not recognize any dependancies on the dev container. These include gRPC headers if you don't have them installed on the host. But getting around this is relatively easy. 
@@ -104,17 +112,6 @@ NOTE: You may need to add other include paths such as `usr/include` and/or `usr/
 You only need to do setup steps once, then in the future simply run the start script with the path to your workspace.
 
 You are now the proud owner of a dedicated CSCE438 docker container, yay! 🙂
-
-## Opening a new shell in the same container
-Start a new shell in the container by running:
-
-    ./new_shell.sh
-
-Or
-  
-    docker exec -it <cont_name> /bin/bash
-
-Where the default name is `systemzRfun`.
 
 ## Some notes
 * Be careful!! Any saved changes will be reflected on the host machine.
